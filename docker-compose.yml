@@ -1,8 +1,21 @@
-version: '3.4'
+version: '3.5'
 
 services:
-  confinder.ui.console:
-    image: ${DOCKER_REGISTRY-}confinderui
-    build:
-      context: .
-      dockerfile: confinder.ui.console/Dockerfile
+    confinder.ui.console:
+        image: confinder
+        build:
+            context: .
+            dockerfile: confinder.ui.console/Dockerfile
+        depends_on:
+            - 'db'
+
+    db:
+        image: postgres:13.3
+        ports:
+          - '5432:5432'
+        volumes:
+          - ./scripts/db/:/docker-entrypoint-initdb.d/
+        environment:
+          - POSTGRES_USER=user
+          - POSTGRES_PASSWORD=password
+          - POSTGRES_DB=confinder

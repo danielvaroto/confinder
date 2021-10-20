@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="HtmlAgilityPack" />
+    <None Remove="wikicfp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wikicfp\" />
+  </ItemGroup>
+</Project>

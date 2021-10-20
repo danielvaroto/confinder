@@ -3,6 +3,16 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Fastenshtein" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\confinder.scraping\confinder.scraping.csproj" />
+  </ItemGroup>
 </Project>
