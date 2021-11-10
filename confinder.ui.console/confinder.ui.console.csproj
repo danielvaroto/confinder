@@ -8,11 +8,14 @@
 
   <ItemGroup>
     <None Remove="Fastenshtein" />
+    <None Remove="Autofac" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
+    <PackageReference Include="Autofac" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\confinder.scraping\confinder.scraping.csproj" />
+    <ProjectReference Include="..\confinder.domain\confinder.domain.csproj" />
+    <ProjectReference Include="..\confinder.infra.data\confinder.infra.data.csproj" />
   </ItemGroup>
 </Project>

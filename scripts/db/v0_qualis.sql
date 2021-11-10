@@ -1,14 +1,31 @@
-﻿CREATE TABLE conference (
-	id SERIAL PRIMARY KEY,
-	initials VARCHAR UNIQUE NOT NULL,
-	name VARCHAR NOT NULL,
-	qualisIndex VARCHAR (2) NOT NULL,
-	createdAt TIMESTAMP NOT NULL,
-	updatedAt TIMESTAMP NOT NULL,
-	deletedAt TIMESTAMP
+﻿CREATE TABLE "Conferences" (
+	"Id" SERIAL PRIMARY KEY,
+	"Initials" VARCHAR UNIQUE NOT NULL,
+	"Name" VARCHAR NOT NULL,
+	"QualisIndex" VARCHAR (2) NOT NULL,
+	"CreatedAt" TIMESTAMP NOT NULL,
+	"UpdatedAt" TIMESTAMP NOT NULL
 );
 
-INSERT INTO conference (initials, name, qualisIndex, createdAt, updatedAt)
+CREATE TABLE "ConferenceEditions" (
+	"Id" SERIAL PRIMARY KEY,
+	"ConferenceId" INT REFERENCES "Conferences"("Id"),
+	"Source" VARCHAR NOT NULL,
+	"Name" VARCHAR NOT NULL,
+	"Location" VARCHAR,
+	"OfficialConferenceUri" VARCHAR,
+	"LevenshteinDistance" INT NOT NULL,
+	"StartDate" TIMESTAMP,
+	"EndDate" TIMESTAMP,
+	"AbstractRegistrationDue" TIMESTAMP,
+	"SubmissionDeadline" TIMESTAMP,
+	"NotificationDue" TIMESTAMP,
+	"FinalVersionDue" TIMESTAMP,
+	"CreatedAt" TIMESTAMP NOT NULL,
+	"UpdatedAt" TIMESTAMP NOT NULL
+);
+
+INSERT INTO "Conferences" ("Initials", "Name", "QualisIndex", "CreatedAt", "UpdatedAt")
 VALUES
     ('21CW', 'IEEE Conference on Norbert Wiener in the 21st Century', 'B2', NOW(), NOW()),
     ('3DCVE', 'International Workshop on Collaborative Virtual Environments', 'B3', NOW(), NOW()),

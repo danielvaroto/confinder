@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace confinder.scraping.wikicfp
+namespace confinder.scraping.WikiCFP
 {
     public class WikiCFPConferenceListItem
     {
@@ -10,8 +10,8 @@ namespace confinder.scraping.wikicfp
         public string Name { get; set; }
         public string Location { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime Deadline { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? Deadline { get; set; }
     }
 }

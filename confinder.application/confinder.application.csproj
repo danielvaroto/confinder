@@ -5,17 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="HtmlAgilityPack" />
-    <None Remove="wikicfp\" />
-    <None Remove="common\" />
-    <None Remove="Fastenshtein" />
+    <None Remove="Interactors\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
-    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <Folder Include="Interactors\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\confinder.infra.data\confinder.infra.data.csproj" />

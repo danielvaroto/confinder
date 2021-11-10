@@ -1,8 +1,8 @@
-﻿namespace confinder.scraping.wikicfp
+﻿namespace confinder.scraping.WikiCFP
 {
     public static class WikiCfpConfig
     {
-        private const string BASE_URL = "http://wikicfp.com";
+        private static readonly string BASE_URL = "http://wikicfp.com";
 
         public static string SearchUrl (string query)
         {
