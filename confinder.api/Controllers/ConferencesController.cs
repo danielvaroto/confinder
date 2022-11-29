@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using confinder.application.Interactors;
 using confinder.application.Models;
@@ -13,10 +14,14 @@ namespace confinder.api.Controllers
     public class ConferencesController : Controller
     {
         private readonly ListConferencesInteractor listConferencesInteractor;
+        private readonly GetConferenceDetailsInteractor getConferenceDetailsInteractor;
 
-        public ConferencesController(ListConferencesInteractor listConferencesInteractor)
-        {
+        public ConferencesController(
+            ListConferencesInteractor listConferencesInteractor,
+            GetConferenceDetailsInteractor getConferenceDetailsInteractor
+        ) {
             this.listConferencesInteractor = listConferencesInteractor;
+            this.getConferenceDetailsInteractor = getConferenceDetailsInteractor;
         }
 
         // GET: api/conferences
@@ -28,9 +33,12 @@ namespace confinder.api.Controllers
 
         // GET api/conferences/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var result = await getConferenceDetailsInteractor.Execute(id);
+            if (result == null)
+                return NotFound();
+            return Ok(result);
         }
     }
 }

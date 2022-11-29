@@ -15,6 +15,7 @@ public class Program
 
         builder.Services.AddScoped<ConfinderContext>();
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        builder.Services.AddScoped<GetConferenceDetailsInteractor>();
         builder.Services.AddScoped<ListConferencesInteractor>();
 
         builder.Services.AddControllers();
