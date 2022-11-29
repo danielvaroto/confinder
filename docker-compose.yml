@@ -1,14 +1,6 @@
 version: '3.5'
 
 services:
-    confinder.ui.console:
-        image: confinder
-        build:
-            context: .
-            dockerfile: confinder.ui.console/Dockerfile
-        depends_on:
-            - 'db'
-
     db:
         image: postgres:13.3
         ports:

@@ -1,17 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Interactors\" />
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="Interactors\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+    <Folder Include="Context\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Scraping\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\confinder.infra.data\confinder.infra.data.csproj" />
-    <ProjectReference Include="..\confinder.domain\confinder.domain.csproj" />
+    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Utils\" />
   </ItemGroup>
 </Project>

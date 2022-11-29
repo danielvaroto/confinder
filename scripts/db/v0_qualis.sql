@@ -3,8 +3,8 @@
 	"Initials" VARCHAR UNIQUE NOT NULL,
 	"Name" VARCHAR NOT NULL,
 	"QualisIndex" VARCHAR (2) NOT NULL,
-	"CreatedAt" TIMESTAMP NOT NULL,
-	"UpdatedAt" TIMESTAMP NOT NULL
+	"CreatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+	"UpdatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE "ConferenceEditions" (
@@ -15,14 +15,14 @@ CREATE TABLE "ConferenceEditions" (
 	"Location" VARCHAR,
 	"OfficialConferenceUri" VARCHAR,
 	"LevenshteinDistance" INT NOT NULL,
-	"StartDate" TIMESTAMP,
-	"EndDate" TIMESTAMP,
-	"AbstractRegistrationDue" TIMESTAMP,
-	"SubmissionDeadline" TIMESTAMP,
-	"NotificationDue" TIMESTAMP,
-	"FinalVersionDue" TIMESTAMP,
-	"CreatedAt" TIMESTAMP NOT NULL,
-	"UpdatedAt" TIMESTAMP NOT NULL
+	"StartDate" DATE NOT NULL,
+	"EndDate" DATE NOT NULL,
+	"AbstractRegistrationDue" DATE,
+	"SubmissionDeadline" DATE NOT NULL,
+	"NotificationDue" DATE,
+	"FinalVersionDue" DATE,
+	"CreatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+	"UpdatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 INSERT INTO "Conferences" ("Initials", "Name", "QualisIndex", "CreatedAt", "UpdatedAt")
