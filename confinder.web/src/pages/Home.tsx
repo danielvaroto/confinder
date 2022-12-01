@@ -4,8 +4,11 @@ import { ReactElement } from 'react';
 
 import { ConferenceCard } from '../components/ConferenceCard';
 import { Filters } from '../components/Filters';
+import { useConferenceList } from '../hooks/fetchConferenceList';
 
 export const Home = (): ReactElement => {
+  const { isLoading, isError, data } = useConferenceList({ page: 1 });
+
   return (
     <>
       <Stack spacing={0.5} sx={{ px: 2, py: 1 }}>
@@ -14,10 +17,9 @@ export const Home = (): ReactElement => {
       </Stack>
       <Filters />
       <Stack>
-        <ConferenceCard />
-        <ConferenceCard />
-        <ConferenceCard />
-        <ConferenceCard />
+        {data?.records?.map((c) => (
+          <ConferenceCard key={c.id} conference={c} />
+        ))}
       </Stack>
     </>
   );

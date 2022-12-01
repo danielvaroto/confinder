@@ -3,7 +3,9 @@ import Chip from '@mui/material/Chip';
 import { ReactElement } from 'react';
 
 export const QualisFilter = (): ReactElement => {
-  const handleClick = (): void => {};
+  const handleClick = (): void => {
+    console.log('hallo');
+  };
   return (
     <Chip
       icon={<PollOutlinedIcon />}
