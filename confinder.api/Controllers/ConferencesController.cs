@@ -11,6 +11,7 @@ namespace confinder.api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class ConferencesController : Controller
     {
         private readonly ListConferencesInteractor listConferencesInteractor;
@@ -33,7 +34,9 @@ namespace confinder.api.Controllers
 
         // GET api/conferences/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ConferenceDetailsResponse>> Get(int id)
         {
             var result = await getConferenceDetailsInteractor.Execute(id);
             if (result == null)

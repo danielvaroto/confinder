@@ -4,6 +4,7 @@ using confinder.application.Interactors;
 using confinder.application.Interfaces;
 using confinder.application.Repositories;
 using confinder.application.Scraping.WikiCFP;
+using Microsoft.OpenApi.Models;
 
 namespace confinder.api;
 
@@ -21,7 +22,11 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen((c) => c.MapType<DateOnly>(() => new OpenApiSchema
+        {
+            Type = "string",
+            Format = "date"
+        }));
 
         var app = builder.Build();
 
