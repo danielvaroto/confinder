@@ -38,6 +38,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseCors((options) => options.AllowAnyOrigin().AllowAnyMethod());
         app.UseAuthorization();
         app.MapControllers();
         app.Run();

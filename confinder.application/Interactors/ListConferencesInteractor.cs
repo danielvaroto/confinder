@@ -36,8 +36,8 @@ namespace confinder.application.Interactors
             query = ApplyFilters(query, request);
 
             var records = await query
-                .Skip(((request.Page ?? 1) - 1) * 100)
-                .Take(100)
+                .Skip(((request.Page ?? 1) - 1) * 10)
+                .Take(10)
                 .ToListAsync();
 
             var totalCount = await query.CountAsync();
