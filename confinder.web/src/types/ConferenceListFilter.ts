@@ -1,6 +1,6 @@
 import { QualisIndex } from './QualisIndex';
 
-export type ConferenceListRequest = {
+export type ConferenceListFilter = {
   page: number;
   name?: string;
   location?: string;

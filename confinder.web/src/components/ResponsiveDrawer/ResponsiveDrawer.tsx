@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { ReactElement, ReactNode } from 'react';
 
@@ -17,9 +18,9 @@ export const ResponsiveDrawer = ({
   onOpen,
 }: ResponsiveDrawerProps): ReactElement => {
   return (
-    <SwipeableDrawer open={open} onClose={onClose} onOpen={onOpen}>
+    <SwipeableDrawer anchor="bottom" open={open} onClose={onClose} onOpen={onOpen}>
       <Puller />
-      {children}
+      <Box sx={{ mt: '32px' }}>{children}</Box>
     </SwipeableDrawer>
   );
 };

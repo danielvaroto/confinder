@@ -4,10 +4,12 @@ import { ReactElement } from 'react';
 
 import { ConferenceCard } from '../components/ConferenceCard';
 import { Filters } from '../components/Filters';
+import { useListFilter } from '../contexts/ListFilterContext';
 import { useConferenceList } from '../hooks/fetchConferenceList';
 
 export const Home = (): ReactElement => {
-  const { isLoading, isError, data } = useConferenceList({ page: 1 });
+  const { filter } = useListFilter();
+  const { isLoading, isError, data } = useConferenceList(filter);
 
   return (
     <>

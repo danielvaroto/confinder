@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { ColorModeContext } from './contexts/ColorModeContext';
+import { ListFilterContextProvider } from './contexts/ListFilterContext';
 import { Details } from './pages/Details';
 import { Home } from './pages/Home';
 import { Layout } from './pages/Layout';
@@ -55,7 +56,9 @@ export const App = (): ReactElement => {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <RouterProvider router={router} />
+          <ListFilterContextProvider>
+            <RouterProvider router={router} />
+          </ListFilterContextProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </QueryClientProvider>
