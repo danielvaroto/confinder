@@ -24,7 +24,7 @@ export const LocationFilter = (): ReactElement => {
     setLocation(event.target.value);
   };
   const handleClearFilter = () => {
-    setLocation(undefined);
+    setLocation();
   };
   return (
     <>
