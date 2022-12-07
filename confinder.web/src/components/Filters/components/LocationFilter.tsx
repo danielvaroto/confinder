@@ -4,9 +4,9 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 import { ReactElement, useState } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
@@ -39,14 +39,8 @@ export const LocationFilter = (): ReactElement => {
         <Grid container spacing={2} p={1}>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel id="location-select-label">Localização</InputLabel>
-              <Select
-                labelId="location-select-label"
-                id="location-select"
-                label="Localização"
-                value={location ?? ''}
-                onChange={handleSelectChange}
-              >
+              <Typography gutterBottom>Localização:</Typography>
+              <Select value={location ?? ''} onChange={handleSelectChange}>
                 {data?.records.map((location) => (
                   <MenuItem key={location} value={location}>
                     {location}
