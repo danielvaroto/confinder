@@ -7,7 +7,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Moment } from 'moment';
 import { ReactElement, useState } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
@@ -19,11 +18,11 @@ export const SubmissionDateFilter = (): ReactElement => {
     setSubmissionDeadline,
   } = useListFilter();
   const [open, setOpen] = useState(false);
-  const handleMinDateChange = (value: Moment | null) => {
-    setSubmissionDeadline(value?.toDate() ?? undefined, maxSubmissionDeadline);
+  const handleMinDateChange = (value: Date | null) => {
+    setSubmissionDeadline(value ?? undefined, maxSubmissionDeadline);
   };
-  const handleMaxDateChange = (value: Moment | null) => {
-    setSubmissionDeadline(minSubmissionDeadline, value?.toDate() ?? undefined);
+  const handleMaxDateChange = (value: Date | null) => {
+    setSubmissionDeadline(minSubmissionDeadline, value ?? undefined);
   };
   const handleClearFilter = () => {
     setSubmissionDeadline();

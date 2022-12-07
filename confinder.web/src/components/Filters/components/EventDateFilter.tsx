@@ -7,7 +7,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Moment } from 'moment';
 import { ReactElement, useState } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
@@ -19,11 +18,11 @@ export const EventDateFilter = (): ReactElement => {
     setEventDate,
   } = useListFilter();
   const [open, setOpen] = useState(false);
-  const handleMinDateChange = (value: Moment | null) => {
-    setEventDate(value?.toDate() ?? undefined, maxEventDate);
+  const handleMinDateChange = (value: Date | null) => {
+    setEventDate(value ?? undefined, maxEventDate);
   };
-  const handleMaxDateChange = (value: Moment | null) => {
-    setEventDate(minEventDate, value?.toDate() ?? undefined);
+  const handleMaxDateChange = (value: Date | null) => {
+    setEventDate(minEventDate, value ?? undefined);
   };
   const handleClearFilter = () => {
     setEventDate();
