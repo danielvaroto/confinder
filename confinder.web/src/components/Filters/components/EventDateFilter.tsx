@@ -43,6 +43,7 @@ export const EventDateFilter = (): ReactElement => {
             <FormControl fullWidth>
               <DatePicker
                 label="De"
+                maxDate={maxEventDate}
                 value={minEventDate}
                 onChange={handleMinDateChange}
                 renderInput={(params) => <TextField {...params} />}
@@ -53,6 +54,7 @@ export const EventDateFilter = (): ReactElement => {
             <FormControl fullWidth>
               <DatePicker
                 label="Até"
+                minDate={minEventDate}
                 value={maxEventDate}
                 onChange={handleMaxDateChange}
                 renderInput={(params) => <TextField {...params} />}

@@ -43,6 +43,7 @@ export const SubmissionDateFilter = (): ReactElement => {
             <FormControl fullWidth>
               <DatePicker
                 label="De"
+                maxDate={maxSubmissionDeadline}
                 value={minSubmissionDeadline}
                 onChange={handleMinDateChange}
                 renderInput={(params) => <TextField {...params} />}
@@ -53,6 +54,7 @@ export const SubmissionDateFilter = (): ReactElement => {
             <FormControl fullWidth>
               <DatePicker
                 label="Até"
+                minDate={minSubmissionDeadline}
                 value={maxSubmissionDeadline}
                 onChange={handleMaxDateChange}
                 renderInput={(params) => <TextField {...params} />}
