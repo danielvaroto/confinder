@@ -4,6 +4,7 @@ import { ReactElement } from 'react';
 
 import { ConferenceCard } from '../components/ConferenceCard';
 import { Filters } from '../components/Filters';
+import { Pagination } from '../components/Pagination';
 import { useListFilter } from '../contexts/ListFilterContext';
 import { useConferenceList } from '../hooks/fetchConferenceList';
 
@@ -23,6 +24,9 @@ export const Home = (): ReactElement => {
           <ConferenceCard key={c.id} conference={c} />
         ))}
       </Stack>
+      {data?.perPage && data?.totalCount ? (
+        <Pagination perPage={data.perPage} totalCount={data.totalCount} />
+      ) : null}
     </>
   );
 };

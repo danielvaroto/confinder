@@ -18,6 +18,8 @@ namespace confinder.application.Interactors
 
 		public async Task<ConferenceListResponse> Execute(ConferenceListRequest request)
 		{
+            var itemsPerPage = 10;
+
 			var query = db.ConferenceEditions.Join(
                 db.Conferences,
                 ce => ce.ConferenceId,
@@ -36,14 +38,15 @@ namespace confinder.application.Interactors
             query = ApplyFilters(query, request);
 
             var records = await query
-                .Skip(((request.Page ?? 1) - 1) * 10)
-                .Take(10)
+                .Skip(((request.Page ?? 1) - 1) * itemsPerPage)
+                .Take(itemsPerPage)
                 .ToListAsync();
 
             var totalCount = await query.CountAsync();
 
             return new ConferenceListResponse
             {
+                PerPage = itemsPerPage,
                 PageCount = records.Count,
                 TotalCount = totalCount,
                 Records = records,
