@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ReactElement } from 'react';
@@ -19,11 +20,13 @@ export const Home = (): ReactElement => {
         <Typography variant="subtitle1">865 resultados encontrados</Typography>
       </Stack>
       <Filters />
-      <Stack>
+      <Grid container spacing={1}>
         {data?.records?.map((c) => (
-          <ConferenceCard key={c.id} conference={c} />
+          <Grid item sm={12} md={6} lg={4} xl={3} key={c.id}>
+            <ConferenceCard conference={c} />
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
       {data?.perPage && data?.totalCount ? (
         <Pagination perPage={data.perPage} totalCount={data.totalCount} />
       ) : null}

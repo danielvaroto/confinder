@@ -18,7 +18,7 @@ namespace confinder.application.Interactors
 
 		public async Task<ConferenceListResponse> Execute(ConferenceListRequest request)
 		{
-            var itemsPerPage = 10;
+            var itemsPerPage = 12;
 
 			var query = db.ConferenceEditions.Join(
                 db.Conferences,
