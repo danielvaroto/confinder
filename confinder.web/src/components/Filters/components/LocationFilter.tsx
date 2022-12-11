@@ -26,14 +26,17 @@ export const LocationFilter = (): ReactElement => {
   const handleClearFilter = () => {
     setLocation();
   };
+  const chipVariant = location ? 'filled' : 'outlined';
+  const handleChipDelete = location ? handleClearFilter : undefined;
   return (
     <>
       <Chip
         icon={<LocationOnOutlinedIcon />}
         label="Localização"
-        variant="outlined"
+        variant={chipVariant}
         sx={{ borderRadius: '8px', borderColor: '#616161' }}
         onClick={() => setOpen(true)}
+        onDelete={handleChipDelete}
       />
       <ResponsiveDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
         <Grid container spacing={2} p={1}>

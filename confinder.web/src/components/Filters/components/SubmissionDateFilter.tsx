@@ -27,14 +27,18 @@ export const SubmissionDateFilter = (): ReactElement => {
   const handleClearFilter = () => {
     setSubmissionDeadline();
   };
+  const chipVariant = minSubmissionDeadline || maxSubmissionDeadline ? 'filled' : 'outlined';
+  const handleChipDelete =
+    minSubmissionDeadline || maxSubmissionDeadline ? handleClearFilter : undefined;
   return (
     <>
       <Chip
         icon={<EventOutlinedIcon />}
         label="Submissão"
-        variant="outlined"
+        variant={chipVariant}
         sx={{ borderRadius: '8px', borderColor: '#616161' }}
         onClick={() => setOpen(true)}
+        onDelete={handleChipDelete}
       />
       <ResponsiveDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
         <Grid container spacing={2} p={1}>

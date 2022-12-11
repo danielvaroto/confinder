@@ -11,14 +11,12 @@ import { MouseEvent, ReactElement, useState } from 'react';
 export const Sort = (): ReactElement => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
   const handleClickChip = (event: MouseEvent<HTMLDivElement>): void => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseMenu = (): void => {
     setAnchorEl(null);
   };
-
   return (
     <>
       <Chip

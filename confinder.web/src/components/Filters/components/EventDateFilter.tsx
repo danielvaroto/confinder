@@ -27,14 +27,17 @@ export const EventDateFilter = (): ReactElement => {
   const handleClearFilter = () => {
     setEventDate();
   };
+  const chipVariant = minEventDate || maxEventDate ? 'filled' : 'outlined';
+  const handleChipDelete = minEventDate || maxEventDate ? handleClearFilter : undefined;
   return (
     <>
       <Chip
         icon={<DateRangeOutlinedIcon />}
         label="Evento"
-        variant="outlined"
+        variant={chipVariant}
         sx={{ borderRadius: '8px', borderColor: '#616161' }}
         onClick={() => setOpen(true)}
+        onDelete={handleChipDelete}
       />
       <ResponsiveDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
         <Grid container spacing={2} p={1}>

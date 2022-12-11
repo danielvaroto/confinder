@@ -85,11 +85,15 @@ export const QualisFilter = (): ReactElement => {
     if (!Array.isArray(value)) {
       return;
     }
-    setQualisIndex(qualisByNumber[value[1]], qualisByNumber[value[0]]);
+    const minQualisValue = value[1] === marks.length ? undefined : qualisByNumber[value[1]];
+    const maxQualisValue = value[0] === 1 ? undefined : qualisByNumber[value[0]];
+    setQualisIndex(minQualisValue, maxQualisValue);
   };
   const handleClearFilter = () => {
     setQualisIndex();
   };
+  const chipVariant = minQualisIndex || maxQualisIndex ? 'filled' : 'outlined';
+  const handleChipDelete = minQualisIndex || maxQualisIndex ? handleClearFilter : undefined;
   const value =
     minQualisIndex && maxQualisIndex
       ? [numberByQualis[maxQualisIndex], numberByQualis[minQualisIndex]]
@@ -99,9 +103,10 @@ export const QualisFilter = (): ReactElement => {
       <Chip
         icon={<PollOutlinedIcon />}
         label="Qualis"
-        variant="outlined"
+        variant={chipVariant}
         sx={{ borderRadius: '8px', borderColor: '#616161' }}
         onClick={() => setOpen(true)}
+        onDelete={handleChipDelete}
       />
       <ResponsiveDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
         <Grid container spacing={2} p={1}>
