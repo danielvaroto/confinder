@@ -12,7 +12,7 @@ namespace confinder.application.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("User ID=user;Password=password;Host=localhost;Port=5432;Database=confinder;Pooling=true;");
+            optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
 
             base.OnConfiguring(optionsBuilder);
         }

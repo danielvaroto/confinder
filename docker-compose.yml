@@ -12,7 +12,17 @@ services:
       context: ./
       dockerfile: ./confinder.api/Dockerfile
     ports:
-      - "7077:443"
+      - "7077:80"
+    environment:
+      - DB_CONNECTION_STRING=User ID=user;Password=password;Host=db;Port=5432;Database=confinder;Pooling=true
+    depends_on:
+      - db
+  console:
+    build:
+      context: ./
+      dockerfile: ./confinder.console/Dockerfile
+    environment:
+      - DB_CONNECTION_STRING=User ID=user;Password=password;Host=db;Port=5432;Database=confinder;Pooling=true
     depends_on:
       - db
   db:

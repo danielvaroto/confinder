@@ -8,7 +8,7 @@ import { formatRequestDate } from '../utils/formatRequestDate';
 const fetchConferenceList = async (
   request: ConferenceListFilter,
 ): Promise<ConferenceListResponse> => {
-  const res = await axios.get<ConferenceListResponse>('https://localhost:7077/api/conferences', {
+  const res = await axios.get<ConferenceListResponse>('http://localhost:7077/api/conferences', {
     params: {
       ...request,
       minEventDate: formatRequestDate(request.minEventDate),
