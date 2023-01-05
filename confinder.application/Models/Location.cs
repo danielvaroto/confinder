@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
 namespace confinder.application.Models
 {
-    public class Conference : Entity
+	public class Location : Entity
     {
-        public string Initials { get; set; }
         public string Name { get; set; }
-        public string QualisIndex { get; set; }
+		public double Latitude { get; set; }
+		public double Longitude { get; set; }
 
         public List<ConferenceEdition> ConferenceEditions { get; } = new List<ConferenceEdition>();
     }
 }
+

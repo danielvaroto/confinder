@@ -14,13 +14,17 @@ namespace confinder.api.Controllers
     [Produces("application/json")]
     public class ConferencesController : Controller
     {
+        private readonly ConferenceMapInteractor conferenceMapInteractor;
         private readonly ListConferencesInteractor listConferencesInteractor;
         private readonly GetConferenceDetailsInteractor getConferenceDetailsInteractor;
 
         public ConferencesController(
+            ConferenceMapInteractor conferenceMapInteractor,
             ListConferencesInteractor listConferencesInteractor,
             GetConferenceDetailsInteractor getConferenceDetailsInteractor
-        ) {
+        )
+        {
+            this.conferenceMapInteractor = conferenceMapInteractor;
             this.listConferencesInteractor = listConferencesInteractor;
             this.getConferenceDetailsInteractor = getConferenceDetailsInteractor;
         }
@@ -30,6 +34,13 @@ namespace confinder.api.Controllers
         public async Task<ConferenceListResponse> Get([FromQuery] ConferenceListRequest filter)
         {
             return await listConferencesInteractor.Execute(filter);
+        }
+
+        // GET: api/conferences/map
+        [HttpGet("map")]
+        public Task<ConferenceMapResponse> GetMap([FromQuery] ConferenceListRequest filter)
+        {
+            return conferenceMapInteractor.Execute();
         }
 
         // GET api/conferences/5

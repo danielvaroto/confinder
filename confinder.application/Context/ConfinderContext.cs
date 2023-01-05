@@ -9,11 +9,12 @@ namespace confinder.application.Context
     {
         public DbSet<Conference> Conferences { get; set; }
         public DbSet<ConferenceEdition> ConferenceEditions { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<LocationLog> LocationLogs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
-
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -30,13 +31,10 @@ namespace confinder.application.Context
                             .Where(e => e.Entity is Entity && (
                                 e.State == EntityState.Added
                                 || e.State == EntityState.Modified));
-
             foreach (var entityEntry in entries)
             {
                 var now = DateTime.UtcNow;
-
                 ((Entity)entityEntry.Entity).UpdatedAt = now;
-
                 if (entityEntry.State == EntityState.Added)
                 {
                     ((Entity)entityEntry.Entity).CreatedAt = now;

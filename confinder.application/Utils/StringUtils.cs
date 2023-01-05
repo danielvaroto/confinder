@@ -4,7 +4,7 @@ using System.Text;
 
 namespace confinder.application.Utils
 {
-    public class StringUtils
+    public static class StringUtils
     {
         public static string Normalize(string? text)
         {

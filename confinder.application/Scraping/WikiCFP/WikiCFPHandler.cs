@@ -1,46 +1,63 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using confinder.application.Context;
 using confinder.application.Interfaces;
 using confinder.application.Models;
+using confinder.application.Utils;
 using Fastenshtein;
 
 namespace confinder.application.Scraping.WikiCFP
 {
     public class WikiCFPHandler : IScrapingHandler
     {
-        private readonly IRepository<Conference> conferenceRepository;
-        private readonly IRepository<ConferenceEdition> conferenceEditionRepository;
+        private readonly ConfinderContext db;
 
-        public WikiCFPHandler(IRepository<Conference> conferenceRepository, IRepository<ConferenceEdition> conferenceEditionRepository)
+        public WikiCFPHandler(ConfinderContext db)
         {
-            this.conferenceRepository = conferenceRepository;
-            this.conferenceEditionRepository = conferenceEditionRepository;
+            this.db = db;
         }
 
         public async IAsyncEnumerable<ConferenceEdition> Execute()
         {
-            var conferences = conferenceRepository.GetAll();
+            var conferences = db.Conferences.OrderBy((c) => c.Id).ToList();
             foreach (var conference in conferences)
             {
-                var searchUrl = $"http://wikicfp.com/cfp/servlet/tool.search?q={conference.Name}&year=f";
-                var searchResponse = await ScrapingFramework.CallUrl(searchUrl);
+                string? searchResponse = null;
+                try
+                {
+                    searchResponse = await ScrapingFramework.CallUrl($"http://wikicfp.com/cfp/servlet/tool.search?q={conference.Name}&year=f");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    continue;
+                }
                 foreach (var wikiCfpListItem in WikiCFPFHtmlParser.ParseSearchResultPage(searchResponse))
                 {
-                    if (Levenshtein.Distance(wikiCfpListItem.Name, conference.Name) > (conference.Name.Length * 0.2))
+                    var (minEditDistanceConference, minEditDistance) = ConferenceUtils.GetMinEditDistance(conferences, wikiCfpListItem.Name);
+                    if (minEditDistanceConference == null || minEditDistance == null || minEditDistance > (minEditDistanceConference.Name.Length * 0.2))
                     {
                         continue;
                     }
-                    var detailsResponse = await ScrapingFramework.CallUrl($"http://wikicfp.com{wikiCfpListItem.DetailsLink}");
+                    string? detailsResponse = null;
+                    try
+                    {
+                        detailsResponse = await ScrapingFramework.CallUrl($"http://wikicfp.com{wikiCfpListItem.DetailsLink}");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                        continue;
+                    }
                     var wikiCfpDetails = WikiCFPFHtmlParser.ParseDetailsPage(detailsResponse);
-
                     yield return new ConferenceEdition
                     {
-                        ConferenceId = conference.Id,
+                        ConferenceId = minEditDistanceConference.Id,
                         Source = "WikiCFP",
-                        Location = wikiCfpDetails.Location ?? wikiCfpListItem.Location,
+                        UnformattedLocation = wikiCfpDetails.Location ?? wikiCfpListItem.Location,
                         Name = wikiCfpListItem.Name,
-                        LevenshteinDistance = Levenshtein.Distance(wikiCfpListItem.Name, conference.Name),
+                        LevenshteinDistance = (int)minEditDistance,
                         StartDate = wikiCfpDetails.StartDate ?? wikiCfpListItem.StartDate,
                         EndDate = wikiCfpDetails.EndDate ?? wikiCfpListItem.EndDate,
                         SubmissionDeadline = wikiCfpDetails.SubmissionDeadline ?? wikiCfpListItem.Deadline,

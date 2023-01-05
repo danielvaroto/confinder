@@ -13,14 +13,13 @@
     <Folder Include="Repositories\" />
     <Folder Include="Scraping\" />
     <Folder Include="Utils\" />
+    <Folder Include="Geocoding\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Utils\" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 </Project>

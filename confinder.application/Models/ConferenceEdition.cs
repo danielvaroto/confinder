@@ -5,12 +5,13 @@ namespace confinder.application.Models
     public class ConferenceEdition : Entity
     {
         public int ConferenceId { get; set; }
+        public int LocationId { get; set; }
 
         public string Source { get; set; }
 
         public string Name { get; set; }
-        public string? Location { get; set; }
         public string? OfficialConferenceUri { get; set; }
+        public string UnformattedLocation { get; set; }
         public int LevenshteinDistance { get; set; }
 
         public DateOnly StartDate { get; set; }
@@ -21,5 +22,6 @@ namespace confinder.application.Models
         public DateOnly? FinalVersionDue { get; set; }
 
         public Conference Conference { get; set; }
+        public Location Location { get; set; }
     }
 }

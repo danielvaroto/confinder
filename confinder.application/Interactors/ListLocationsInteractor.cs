@@ -18,14 +18,10 @@ namespace confinder.application.Interactors
 
         public async Task<LocationListResponse> Execute()
         {
-            var query = db.ConferenceEditions
-                .Select((ce) => ce.Location)
-                .Distinct()
-                .Where((l) => l != null && l != "")
-                .OrderBy((l) => l);
-
-            var records = await query.ToListAsync();
-
+            var records = await db.Locations
+                .Select((l) => l.Name)
+                .OrderBy((l) => l)
+                .ToListAsync();
             return new LocationListResponse
             {
                 TotalCount = records.Count,

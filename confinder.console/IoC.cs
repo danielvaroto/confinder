@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using confinder.application.Context;
+using confinder.application.Geocoding;
 using confinder.application.Interactors;
 using confinder.application.Interfaces;
 using confinder.application.Repositories;
@@ -14,6 +15,7 @@ namespace confinder.ui.console
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ConfinderContext>().AsSelf();
+            builder.RegisterType<GeocodingService>().AsSelf();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterType<WikiCFPHandler>().As<IScrapingHandler>();
             builder.RegisterType<ScrapAllSourcesInteractor>().AsSelf();

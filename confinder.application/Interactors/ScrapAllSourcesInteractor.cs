@@ -5,6 +5,7 @@ using confinder.application.Context;
 using confinder.application.Utils;
 using Fastenshtein;
 using Microsoft.EntityFrameworkCore;
+using confinder.application.Geocoding;
 
 namespace confinder.application.Interactors
 {
@@ -12,16 +13,20 @@ namespace confinder.application.Interactors
     {
         private readonly ConfinderContext db;
         private readonly IEnumerable<IScrapingHandler> scrapingHandlers;
+        private readonly GeocodingService geocodingService;
         private static readonly HashSet<string> invalidLocations = new HashSet<string>
         {
-            "hybridconference"
+            "hybridconference",
+            "virtualconference"
         };
 
         public ScrapAllSourcesInteractor(ConfinderContext db,
-            IEnumerable<IScrapingHandler> scrapingHandlers)
+            IEnumerable<IScrapingHandler> scrapingHandlers,
+            GeocodingService geocodingService)
         {
             this.db = db;
             this.scrapingHandlers = scrapingHandlers;
+            this.geocodingService = geocodingService;
         }
 
         public async Task Execute()
@@ -30,35 +35,89 @@ namespace confinder.application.Interactors
             {
                 await foreach (var conferenceEdition in scrapingHandler.Execute())
                 {
-                    var conflictingConferenceEdition = db.ConferenceEditions
-                        .Include(ce => ce.Conference)
-                        .FirstOrDefault((ce) =>
-                            ce.ConferenceId == conferenceEdition.ConferenceId
-                            && ce.StartDate.AddMonths(-3) <= conferenceEdition.StartDate
-                            && ce.StartDate.AddMonths(3) >= conferenceEdition.StartDate);
-                    if (conflictingConferenceEdition == null)
+                    try
                     {
-                        await db.ConferenceEditions.AddAsync(conferenceEdition);
+                        var conflictingConferenceEdition = findConflictingConferenceEdition(conferenceEdition);
+                        if (conflictingConferenceEdition == null)
+                        {
+                            Location? geocodingLocation = null;
+                            try
+                            {
+                                geocodingLocation = await geocodingService.GetLocation(conferenceEdition.UnformattedLocation);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine($"Could not find geocoding for: '{conferenceEdition.UnformattedLocation}'");
+                                Console.WriteLine(e.ToString());
+                            }
+                            if (geocodingLocation != null)
+                            {
+                                var storedGeocodingLocation = db.Locations.FirstOrDefault((l) => l.Name == geocodingLocation.Name);
+                                conferenceEdition.Location = storedGeocodingLocation ?? geocodingLocation;
+                                await db.ConferenceEditions.AddAsync(conferenceEdition);
+                                await db.LocationLogs.AddAsync(new LocationLog
+                                {
+                                    UnformattedLocation = conferenceEdition.UnformattedLocation,
+                                    ConferenceEdition = conferenceEdition,
+                                    Location = conferenceEdition.Location,
+                                });
+                            }
+                        }
+                        else
+                        {
+                            await MergeConflictingConferenceEdition(conflictingConferenceEdition, conferenceEdition);
+                            db.ConferenceEditions.Update(conflictingConferenceEdition);
+                        }
+                        Console.WriteLine($"Saving conference edition from conference id '{conferenceEdition.ConferenceId}'");
+                        db.SaveChanges();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        MergeConflictingConferenceEdition(conflictingConferenceEdition, conferenceEdition);
-                        db.ConferenceEditions.Update(conflictingConferenceEdition);
+                        Console.WriteLine(e.ToString());
                     }
-                    Console.WriteLine($"Saving conference edition from conference id '{conferenceEdition.ConferenceId}'");
-                    db.SaveChanges();
                 }
             }
         }
 
-        private static void MergeConflictingConferenceEdition(ConferenceEdition old, ConferenceEdition @new)
+        private ConferenceEdition? findConflictingConferenceEdition(ConferenceEdition conferenceEdition)
+        {
+            return db.ConferenceEditions
+                .Include(ce => ce.Conference)
+                .FirstOrDefault((ce) =>
+                    ce.ConferenceId == conferenceEdition.ConferenceId
+                    && ce.StartDate.AddMonths(-3) <= conferenceEdition.StartDate
+                    && ce.StartDate.AddMonths(3) >= conferenceEdition.StartDate);
+        }
+
+        private async Task MergeConflictingConferenceEdition(ConferenceEdition old, ConferenceEdition @new)
         {
             old.StartDate = @new.StartDate;
             old.EndDate = @new.EndDate;
             old.SubmissionDeadline = @new.SubmissionDeadline;
-            if (IsValidLocation(@new.Location))
+            if (@new.UnformattedLocation != old.UnformattedLocation && IsValidLocation(@new.UnformattedLocation))
             {
-                old.Location = @new.Location;
+                Location? geocodingLocation = null;
+                try
+                {
+                    geocodingLocation = await geocodingService.GetLocation(@new.UnformattedLocation);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Could not find geocoding for: '{@new.UnformattedLocation}'");
+                    Console.WriteLine(e.ToString());
+                }
+                if (geocodingLocation != null)
+                {
+                    var storedGeocodingLocation = db.Locations.FirstOrDefault((l) => l.Name == geocodingLocation.Name);
+                    old.Location = storedGeocodingLocation ?? geocodingLocation;
+                    old.UnformattedLocation = @new.UnformattedLocation;
+                    await db.LocationLogs.AddAsync(new LocationLog
+                    {
+                        UnformattedLocation = @new.UnformattedLocation,
+                        ConferenceEdition = old,
+                        Location = old.Location,
+                    });
+                }
             }
             if (Levenshtein.Distance(old.Conference.Name, @new.Name) < Levenshtein.Distance(old.Conference.Name, old.Name))
             {

@@ -28,7 +28,7 @@ namespace confinder.application.Interactors
                 {
                     Id = ce.Id,
                     Name = ce.Name,
-                    Location = ce.Location,
+                    Location = ce.UnformattedLocation,
                     QualisIndex = c.QualisIndex,
                     StartDate = ce.StartDate,
                     EndDate = ce.EndDate,
