@@ -8,7 +8,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import ptBrLocale from 'date-fns/locale/pt-BR';
 import { ReactElement, ReactNode } from 'react';
 
-const localeText: PickersLocaleText<any> = {
+const localeText: PickersLocaleText<unknown> = {
   // Calendar navigation
   previousMonth: 'Mês anterior',
   nextMonth: 'Próximo mês',

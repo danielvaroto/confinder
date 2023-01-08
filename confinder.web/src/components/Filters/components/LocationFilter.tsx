@@ -19,7 +19,7 @@ export const LocationFilter = (): ReactElement => {
     setLocation,
   } = useListFilter();
   const [open, setOpen] = useState(false);
-  const { isLoading, isError, data } = useLocationList();
+  const { data } = useLocationList();
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     setLocation(event.target.value);
   };

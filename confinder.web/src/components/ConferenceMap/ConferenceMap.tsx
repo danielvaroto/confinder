@@ -9,16 +9,16 @@ type ConferenceMapProps = {
 };
 
 export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
-  const [zoom, setZoom] = useState(3);
-  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+  const [zoom, setZoom] = useState<number | undefined>(3);
+  const [center, setCenter] = useState<google.maps.LatLngLiteral | undefined>({
     lat: 0,
     lng: 0,
   });
 
   const onIdle = (m: google.maps.Map) => {
     console.log('onIdle');
-    setZoom(m.getZoom()!);
-    setCenter(m.getCenter()!.toJSON());
+    setZoom(m.getZoom());
+    setCenter(m.getCenter()?.toJSON());
   };
 
   return (

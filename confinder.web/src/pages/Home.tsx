@@ -17,7 +17,7 @@ import { useConferenceList } from '../hooks/useConferenceList';
 export const Home = (): ReactElement => {
   const navigate = useNavigate();
   const { filter } = useListFilter();
-  const { isLoading, isError, data } = useConferenceList(filter);
+  const { isLoading, data } = useConferenceList(filter);
   const handleFabMapClick = () => navigate(`/map`);
 
   return (
