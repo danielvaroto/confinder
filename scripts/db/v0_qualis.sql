@@ -7,12 +7,22 @@
 	"UpdatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
+CREATE TABLE "Locations" (
+	"Id" SERIAL PRIMARY KEY,
+	"Name" VARCHAR UNIQUE NOT NULL,
+	"Latitude" DOUBLE PRECISION NOT NULL,
+	"Longitude" DOUBLE PRECISION NOT NULL,
+	"CreatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+	"UpdatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
 CREATE TABLE "ConferenceEditions" (
 	"Id" SERIAL PRIMARY KEY,
 	"ConferenceId" INT REFERENCES "Conferences"("Id"),
+	"LocationId" INT REFERENCES "Locations"("Id"),
 	"Source" VARCHAR NOT NULL,
 	"Name" VARCHAR NOT NULL,
-	"Location" VARCHAR,
+	"UnformattedLocation" VARCHAR,
 	"OfficialConferenceUri" VARCHAR,
 	"LevenshteinDistance" INT NOT NULL,
 	"StartDate" DATE NOT NULL,
@@ -21,6 +31,15 @@ CREATE TABLE "ConferenceEditions" (
 	"SubmissionDeadline" DATE NOT NULL,
 	"NotificationDue" DATE,
 	"FinalVersionDue" DATE,
+	"CreatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+	"UpdatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE TABLE "LocationLogs" (
+	"Id" SERIAL PRIMARY KEY,
+	"ConferenceEditionId" INT REFERENCES "ConferenceEditions"("Id"),
+	"LocationId" INT REFERENCES "Locations"("Id"),
+	"UnformattedLocation" VARCHAR NOT NULL,
 	"CreatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
 	"UpdatedAt" TIMESTAMP WITH TIME ZONE NOT NULL
 );
