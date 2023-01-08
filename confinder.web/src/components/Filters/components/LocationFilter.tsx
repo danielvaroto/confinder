@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { ReactElement, useState } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
-import { useLocationList } from '../../../hooks/fetchLocationList';
+import { useLocationList } from '../../../hooks/useLocationList';
 import { ResponsiveDrawer } from '../../ResponsiveDrawer';
 
 export const LocationFilter = (): ReactElement => {

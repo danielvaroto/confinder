@@ -8,15 +8,18 @@ import { formatRequestDate } from '../utils/formatRequestDate';
 const fetchConferenceList = async (
   request: ConferenceListFilter,
 ): Promise<ConferenceListResponse> => {
-  const res = await axios.get<ConferenceListResponse>('http://localhost:7077/api/conferences', {
-    params: {
-      ...request,
-      minEventDate: formatRequestDate(request.minEventDate),
-      maxEventDate: formatRequestDate(request.maxEventDate),
-      minSubmissionDeadline: formatRequestDate(request.minSubmissionDeadline),
-      maxSubmissionDeadline: formatRequestDate(request.maxSubmissionDeadline),
+  const res = await axios.get<ConferenceListResponse>(
+    (process.env.REACT_APP_API_URL as string) + 'conferences',
+    {
+      params: {
+        ...request,
+        minEventDate: formatRequestDate(request.minEventDate),
+        maxEventDate: formatRequestDate(request.maxEventDate),
+        minSubmissionDeadline: formatRequestDate(request.minSubmissionDeadline),
+        maxSubmissionDeadline: formatRequestDate(request.maxSubmissionDeadline),
+      },
     },
-  });
+  );
   return res.data;
 };
 

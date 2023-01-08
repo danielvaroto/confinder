@@ -10,6 +10,7 @@ import { LocalizationProvider } from './contexts/LocalizationProvider';
 import { Details } from './pages/Details';
 import { Home } from './pages/Home';
 import { Layout } from './pages/Layout';
+import { Map } from './pages/Map';
 
 export const App = (): ReactElement => {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
@@ -41,6 +42,10 @@ export const App = (): ReactElement => {
         {
           path: 'details/:id',
           element: <Details />,
+        },
+        {
+          path: 'map',
+          element: <Map />,
         },
         {
           path: '',
