@@ -57,6 +57,7 @@ namespace confinder.application.Scraping.WikiCFP
                         Source = "WikiCFP",
                         UnformattedLocation = wikiCfpDetails.Location ?? wikiCfpListItem.Location,
                         Name = wikiCfpListItem.Name,
+                        OfficialConferenceUri = wikiCfpDetails.OfficialConferenceLink,
                         LevenshteinDistance = (int)minEditDistance,
                         StartDate = wikiCfpDetails.StartDate ?? wikiCfpListItem.StartDate,
                         EndDate = wikiCfpDetails.EndDate ?? wikiCfpListItem.EndDate,

@@ -94,6 +94,9 @@ namespace confinder.application.Scraping.WikiCFP
                     case "Final Version Due":
                         conferenceDetails.FinalVersionDue = StringUtils.ParseDate(infoText);
                         break;
+                    case "Abstract Registration Due":
+                        conferenceDetails.AbstractRegistrationDue = StringUtils.ParseDate(infoText);
+                        break;
                     default:
                         throw new Exception($"Cannot resolve info with header '{infoHeader}'");
                 }

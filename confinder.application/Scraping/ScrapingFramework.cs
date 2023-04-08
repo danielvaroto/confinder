@@ -9,7 +9,7 @@ namespace confinder.application.Scraping
     {
         private static readonly HttpClient client = new HttpClient();
         private static DateTime? lastCall = null;
-        private static readonly int delayInMs = 1;
+        private static readonly int delayInMs = 1000;
 
         public static async Task<string> CallUrl(string fullUrl)
         {

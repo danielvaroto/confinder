@@ -38,9 +38,9 @@ namespace confinder.api.Controllers
 
         // GET: api/conferences/map
         [HttpGet("map")]
-        public Task<ConferenceMapResponse> GetMap([FromQuery] ConferenceListRequest filter)
+        public Task<ConferenceMapResponse> GetMap([FromQuery] ConferenceMapRequest filter)
         {
-            return conferenceMapInteractor.Execute();
+            return conferenceMapInteractor.Execute(filter);
         }
 
         // GET api/conferences/5

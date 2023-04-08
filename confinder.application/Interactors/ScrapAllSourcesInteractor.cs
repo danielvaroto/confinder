@@ -135,6 +135,10 @@ namespace confinder.application.Interactors
             {
                 old.FinalVersionDue = @new.FinalVersionDue;
             }
+            if (@new.OfficialConferenceUri != null)
+            {
+                old.OfficialConferenceUri = @new.OfficialConferenceUri;
+            }
         }
 
         private static bool IsValidLocation(string? location)
