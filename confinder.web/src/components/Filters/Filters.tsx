@@ -8,13 +8,17 @@ import { QualisFilter } from './components/QualisFilter';
 import { Sort } from './components/Sort';
 import { SubmissionDateFilter } from './components/SubmissionDateFilter';
 
-export const Filters = (): ReactElement => {
+export type FiltersProps = {
+  isMap?: boolean;
+};
+
+export const Filters = ({ isMap = false }: FiltersProps): ReactElement => {
   return (
     <Stack spacing={1} direction="row" sx={{ overflowX: 'auto', px: 2, pb: 1 }}>
-      <Sort />
+      {!isMap && <Sort />}
       <NameFilter />
       <QualisFilter />
-      <LocationFilter />
+      {!isMap && <LocationFilter />}
       <SubmissionDateFilter />
       <EventDateFilter />
     </Stack>

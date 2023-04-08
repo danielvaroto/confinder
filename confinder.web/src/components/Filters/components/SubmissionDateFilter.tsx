@@ -43,7 +43,9 @@ export const SubmissionDateFilter = (): ReactElement => {
       <ResponsiveDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
         <Grid container spacing={2} p={1}>
           <Grid item xs={12}>
-            <Typography gutterBottom>Data da submissão:</Typography>
+            <Typography>Data da submissão:</Typography>
+          </Grid>
+          <Grid item xs={6}>
             <FormControl fullWidth>
               <DatePicker
                 label="De"
@@ -54,7 +56,7 @@ export const SubmissionDateFilter = (): ReactElement => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <FormControl fullWidth>
               <DatePicker
                 label="Até"

@@ -29,6 +29,7 @@ export const EventDateFilter = (): ReactElement => {
   };
   const chipVariant = minEventDate || maxEventDate ? 'filled' : 'outlined';
   const handleChipDelete = minEventDate || maxEventDate ? handleClearFilter : undefined;
+
   return (
     <>
       <Chip
@@ -42,7 +43,9 @@ export const EventDateFilter = (): ReactElement => {
       <ResponsiveDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
         <Grid container spacing={2} p={1}>
           <Grid item xs={12}>
-            <Typography gutterBottom>Data do evento:</Typography>
+            <Typography>Data do evento:</Typography>
+          </Grid>
+          <Grid item xs={6}>
             <FormControl fullWidth>
               <DatePicker
                 label="De"
@@ -53,7 +56,7 @@ export const EventDateFilter = (): ReactElement => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <FormControl fullWidth>
               <DatePicker
                 label="Até"

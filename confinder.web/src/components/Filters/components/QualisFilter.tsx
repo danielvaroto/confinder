@@ -81,7 +81,7 @@ export const QualisFilter = (): ReactElement => {
     setQualisIndex,
   } = useListFilter();
   const [open, setOpen] = useState(false);
-  const handleSliderChange = (event: Event, value: number | number[]) => {
+  const handleSliderChange = (_: Event, value: number | number[]) => {
     if (!Array.isArray(value)) {
       return;
     }
@@ -94,10 +94,11 @@ export const QualisFilter = (): ReactElement => {
   };
   const chipVariant = minQualisIndex || maxQualisIndex ? 'filled' : 'outlined';
   const handleChipDelete = minQualisIndex || maxQualisIndex ? handleClearFilter : undefined;
-  const value =
-    minQualisIndex && maxQualisIndex
-      ? [numberByQualis[maxQualisIndex], numberByQualis[minQualisIndex]]
-      : [1, marks.length];
+  const value = [
+    maxQualisIndex ? numberByQualis[maxQualisIndex] : 1,
+    minQualisIndex ? numberByQualis[minQualisIndex] : marks.length,
+  ];
+
   return (
     <>
       <Chip

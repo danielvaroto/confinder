@@ -9,7 +9,6 @@ import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import { ReactElement } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { ConferenceListItemResponse } from '../../types/ConferenceListItemResponse';
 import { formatListCardDate } from '../../utils/formatListCardDate';
@@ -18,21 +17,18 @@ import { TitleTypography } from './components/TitleTypography';
 
 type ConferenceCardProps = {
   conference: ConferenceListItemResponse;
+  onClick: () => void;
 };
 
-export const ConferenceCard = ({ conference }: ConferenceCardProps): ReactElement => {
-  const navigate = useNavigate();
-
+export const ConferenceCard = ({ conference, onClick }: ConferenceCardProps): ReactElement => {
   const qualisLabel = `Qualis ${conference.qualisIndex}`;
   const eventDateLabel = `${formatListCardDate(conference.startDate)} até ${formatListCardDate(
     conference.endDate,
   )}`;
 
-  const handleCardClick = () => navigate(`/details/${conference.id}`);
-
   return (
     <Card raised sx={{ width: '100%' }}>
-      <CardActionArea onClick={handleCardClick}>
+      <CardActionArea onClick={onClick}>
         <CardContent>
           <Box minHeight="68px">
             <TitleTypography>{conference.name}</TitleTypography>

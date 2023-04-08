@@ -6,25 +6,25 @@ import { ConferenceListResponse } from '../types/ConferenceListResponse';
 import { formatRequestDate } from '../utils/formatRequestDate';
 
 const fetchConferenceList = async (
-  request: ConferenceListFilter,
+  filter: ConferenceListFilter,
 ): Promise<ConferenceListResponse> => {
   const res = await axios.get<ConferenceListResponse>(
     (process.env.REACT_APP_API_URL as string) + 'conferences',
     {
       params: {
-        ...request,
-        minEventDate: formatRequestDate(request.minEventDate),
-        maxEventDate: formatRequestDate(request.maxEventDate),
-        minSubmissionDeadline: formatRequestDate(request.minSubmissionDeadline),
-        maxSubmissionDeadline: formatRequestDate(request.maxSubmissionDeadline),
+        ...filter,
+        minEventDate: formatRequestDate(filter.minEventDate),
+        maxEventDate: formatRequestDate(filter.maxEventDate),
+        minSubmissionDeadline: formatRequestDate(filter.minSubmissionDeadline),
+        maxSubmissionDeadline: formatRequestDate(filter.maxSubmissionDeadline),
       },
     },
   );
   return res.data;
 };
 
-export const useConferenceList = (request: ConferenceListFilter) => {
-  return useQuery<ConferenceListResponse>(['conferenceList', request], () =>
-    fetchConferenceList(request),
+export const useConferenceList = (filter: ConferenceListFilter) => {
+  return useQuery<ConferenceListResponse>(['conferenceList', filter], () =>
+    fetchConferenceList(filter),
   );
 };
