@@ -39,7 +39,6 @@ namespace confinder.application.Utils
                 return parsedDate;
             }
 
-            Console.WriteLine($"Invalid date format: {date}.");
             return null;
         }
     }

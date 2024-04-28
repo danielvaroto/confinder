@@ -10,11 +10,9 @@ namespace confinder.application.Scraping.WikiCFP
 {
     public class WikiCFPFHtmlParser
     {
-        public static IEnumerable<WikiCFPConferenceListItem> ParseSearchResultPage(string response)
+        public static async IAsyncEnumerable<WikiCFPConferenceListItem> ParseSearchResultPage(string url)
         {
-            var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(response);
-
+            var htmlDocument = await ScrapingFramework.GetHtmlDocument(url);
             var headerBeforeDataTable = htmlDocument.DocumentNode.SelectSingleNode("//*[contains(text(),'Matched Call For Papers for \"')]");
             var dataTableTrs = headerBeforeDataTable.SelectNodes("../../../following-sibling::tr[1]/td/table//tr");
 
@@ -44,21 +42,19 @@ namespace confinder.application.Scraping.WikiCFP
                         Initials = firstTrTds[0].InnerText.Trim(),
                         Name = firstTrTds[1].InnerText.Trim(),
                         Location = secondTrTds[1].InnerText.Trim(),
-                        StartDate = (DateOnly)startDate,
-                        EndDate = (DateOnly)endDate,
-                        Deadline = (DateOnly)deadline,
+                        StartDate = startDate,
+                        EndDate = endDate,
+                        Deadline = deadline,
                     };
                 }
             }
         }
 
-        public static WikiCFPConferenceDetails ParseDetailsPage(string response)
+        public static async Task<WikiCFPConferenceDetails> ParseDetailsPage(string url)
         {
+            var htmlDocument = await ScrapingFramework.GetHtmlDocument(url);
             var conferenceDetails = new WikiCFPConferenceDetails();
 
-            var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(response);
-            
             var contentSection = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class, 'contsec')]");
             var infoTrIndex = 4;
 
@@ -114,7 +110,6 @@ namespace confinder.application.Scraping.WikiCFP
                 return (StringUtils.ParseDate(splitedDateRange[0]), StringUtils.ParseDate(splitedDateRange[1]));
             }
 
-            Console.WriteLine($"Invalid date range format: {dateRange}.");
             return (null, null);
         }
     }

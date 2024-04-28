@@ -14,11 +14,6 @@ namespace confinder.application.Interactors
         private readonly ConfinderContext db;
         private readonly IEnumerable<IScrapingHandler> scrapingHandlers;
         private readonly GeocodingService geocodingService;
-        private static readonly HashSet<string> invalidLocations = new HashSet<string>
-        {
-            "hybridconference",
-            "virtualconference"
-        };
 
         public ScrapAllSourcesInteractor(ConfinderContext db,
             IEnumerable<IScrapingHandler> scrapingHandlers,
@@ -94,7 +89,7 @@ namespace confinder.application.Interactors
             old.StartDate = @new.StartDate;
             old.EndDate = @new.EndDate;
             old.SubmissionDeadline = @new.SubmissionDeadline;
-            if (@new.UnformattedLocation != old.UnformattedLocation && IsValidLocation(@new.UnformattedLocation))
+            if (@new.UnformattedLocation != old.UnformattedLocation && ConferenceUtils.IsValidLocation(@new.UnformattedLocation))
             {
                 Location? geocodingLocation = null;
                 try
@@ -139,11 +134,6 @@ namespace confinder.application.Interactors
             {
                 old.OfficialConferenceUri = @new.OfficialConferenceUri;
             }
-        }
-
-        private static bool IsValidLocation(string? location)
-        {
-            return !invalidLocations.Contains(StringUtils.Normalize(location));
         }
     }
 }

@@ -6,12 +6,10 @@ namespace confinder.console;
 
 class Program
 {
-    private static IContainer Container { get; set; }
-
     static async Task Main(string[] args)
     {
-        Container = IoC.BuildContainer();
-        using var scope = Container.BeginLifetimeScope();
+        var container = IoC.BuildContainer();
+        using var scope = container.BeginLifetimeScope();
         var scrapper = scope.Resolve<ScrapAllSourcesInteractor>();
         await scrapper.Execute();
     }

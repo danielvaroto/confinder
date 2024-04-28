@@ -1618,3 +1618,5 @@ VALUES
     ('WWW', 'International World Wide Web Conferences', 'A1', NOW(), NOW()),
     ('XP', 'International Conference on Agile Software Development', 'A3', NOW(), NOW()),
     ('ZEUS', 'Central European Workshop on Services and their Composition', 'B4', NOW(), NOW());
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

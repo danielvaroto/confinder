@@ -2,8 +2,10 @@
 
 namespace confinder.application.Models
 {
-	public class ConferenceListRequest
-	{
+    public class ConferenceListRequest
+    {
+        public SortField? SortField { get; set; }
+        public SortOrder? SortOrder { get; set; }
         public int? Page { get; set; }
 
 		public string? Name { get; set; }

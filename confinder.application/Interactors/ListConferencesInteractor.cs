@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using confinder.application.Context;
 using confinder.application.Models;
@@ -53,7 +54,7 @@ namespace confinder.application.Interactors
             };
         }
 
-        private IQueryable<ConferenceListItemResponse> ApplyFilters(IQueryable<ConferenceListItemResponse> query, ConferenceListRequest request)
+        private static IQueryable<ConferenceListItemResponse> ApplyFilters(IQueryable<ConferenceListItemResponse> query, ConferenceListRequest request)
         {
             if (request.Name != null)
                 query = query.Where((c) => c.Name.ToLower().Contains(request.Name.ToLower()));
@@ -92,6 +93,18 @@ namespace confinder.application.Interactors
                     }
                 }
                 query = query.Where((c) => filtredQualisIndex.Contains(c.QualisIndex));
+            }
+            if (request.SortField != null && request.SortOrder != null)
+            {
+                Expression<Func<ConferenceListItemResponse, object>> keySelector = request.SortField == SortField.SubmissionDate
+                    ? c => c.SubmissionDeadline
+                    : request.SortField == SortField.QualisIndex
+                        ? c => c.QualisIndex
+                        : c => c.StartDate;
+                if (request.SortOrder == SortOrder.ASC)
+                    query = query.OrderBy(keySelector);
+                else if (request.SortOrder == SortOrder.DESC)
+                    query = query.OrderByDescending(keySelector);
             }
             return query;
         }

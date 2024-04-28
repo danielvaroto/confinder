@@ -14,6 +14,7 @@
     <Folder Include="Scraping\" />
     <Folder Include="Utils\" />
     <Folder Include="Geocoding\" />
+    <Folder Include="Scraping\Research\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fastenshtein" Version="1.0.0.8" />

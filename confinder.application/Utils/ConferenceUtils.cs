@@ -6,6 +6,14 @@ namespace confinder.application.Utils
 {
     public static class ConferenceUtils
     {
+        private static readonly HashSet<string> invalidLocations = new HashSet<string>
+        {
+            "hybridconference",
+            "virtualconference",
+            "virtualevent",
+            "tba"
+        };
+
         public static (Conference?, int?) GetMinEditDistance(IEnumerable<Conference> conferences, string foundConferenceName)
         {
             int? minEditDistance = null;
@@ -22,6 +30,11 @@ namespace confinder.application.Utils
             }
 
             return (minConference, minEditDistance);
+        }
+
+        public static bool IsValidLocation(string location)
+        {
+            return !invalidLocations.Contains(StringUtils.Normalize(location));
         }
     }
 }

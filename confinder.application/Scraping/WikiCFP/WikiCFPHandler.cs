@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using confinder.application.Context;
+﻿using confinder.application.Context;
 using confinder.application.Interfaces;
 using confinder.application.Models;
 using confinder.application.Utils;
-using Fastenshtein;
 
 namespace confinder.application.Scraping.WikiCFP
 {
@@ -20,37 +16,44 @@ namespace confinder.application.Scraping.WikiCFP
 
         public async IAsyncEnumerable<ConferenceEdition> Execute()
         {
-            var conferences = db.Conferences.OrderBy((c) => c.Id).ToList();
+            var conferences = db.Conferences.OrderBy((c) => Guid.NewGuid()).ToList();
             foreach (var conference in conferences)
             {
-                string? searchResponse = null;
+                IAsyncEnumerable<WikiCFPConferenceListItem>? wikiCfpListItems = null;
                 try
                 {
-                    searchResponse = await ScrapingFramework.CallUrl($"http://wikicfp.com/cfp/servlet/tool.search?q={conference.Name}&year=f");
+                    wikiCfpListItems = WikiCFPFHtmlParser.ParseSearchResultPage($"http://wikicfp.com/cfp/servlet/tool.search?q={conference.Name}&year=f");
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                     continue;
                 }
-                foreach (var wikiCfpListItem in WikiCFPFHtmlParser.ParseSearchResultPage(searchResponse))
+                await foreach (var wikiCfpListItem in wikiCfpListItems)
                 {
                     var (minEditDistanceConference, minEditDistance) = ConferenceUtils.GetMinEditDistance(conferences, wikiCfpListItem.Name);
                     if (minEditDistanceConference == null || minEditDistance == null || minEditDistance > (minEditDistanceConference.Name.Length * 0.2))
                     {
                         continue;
                     }
-                    string? detailsResponse = null;
+                    WikiCFPConferenceDetails? wikiCfpDetails = null;
                     try
                     {
-                        detailsResponse = await ScrapingFramework.CallUrl($"http://wikicfp.com{wikiCfpListItem.DetailsLink}");
+                        wikiCfpDetails = await WikiCFPFHtmlParser.ParseDetailsPage($"http://wikicfp.com{wikiCfpListItem.DetailsLink}");
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.ToString());
                         continue;
                     }
-                    var wikiCfpDetails = WikiCFPFHtmlParser.ParseDetailsPage(detailsResponse);
+                    if ((wikiCfpDetails.StartDate ?? wikiCfpListItem.StartDate) == null
+                        || (wikiCfpDetails.EndDate ?? wikiCfpListItem.EndDate) == null
+                        || (wikiCfpDetails.SubmissionDeadline ?? wikiCfpListItem.Deadline) == null
+                    )
+                    {
+                        continue;
+                    }
+
                     yield return new ConferenceEdition
                     {
                         ConferenceId = minEditDistanceConference.Id,
@@ -59,9 +62,9 @@ namespace confinder.application.Scraping.WikiCFP
                         Name = wikiCfpListItem.Name,
                         OfficialConferenceUri = wikiCfpDetails.OfficialConferenceLink,
                         LevenshteinDistance = (int)minEditDistance,
-                        StartDate = wikiCfpDetails.StartDate ?? wikiCfpListItem.StartDate,
-                        EndDate = wikiCfpDetails.EndDate ?? wikiCfpListItem.EndDate,
-                        SubmissionDeadline = wikiCfpDetails.SubmissionDeadline ?? wikiCfpListItem.Deadline,
+                        StartDate = (DateOnly)(wikiCfpDetails.StartDate ?? wikiCfpListItem.StartDate),
+                        EndDate = (DateOnly)(wikiCfpDetails.EndDate ?? wikiCfpListItem.EndDate),
+                        SubmissionDeadline = (DateOnly)(wikiCfpDetails.SubmissionDeadline ?? wikiCfpListItem.Deadline),
                         AbstractRegistrationDue = wikiCfpDetails.AbstractRegistrationDue,
                         NotificationDue = wikiCfpDetails.NotificationDue,
                         FinalVersionDue = wikiCfpDetails.FinalVersionDue

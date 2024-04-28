@@ -14,6 +14,7 @@ namespace confinder.application.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // optionsBuilder.LogTo(Console.WriteLine);
             optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
             base.OnConfiguring(optionsBuilder);
         }
