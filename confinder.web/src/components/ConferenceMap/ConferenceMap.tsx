@@ -44,8 +44,8 @@ export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
             'gap': 1,
             'py': 1,
             'overflow': 'auto',
-            // 'width': 343,
             'scrollSnapType': 'x mandatory',
+            'width': '100%',
             '& > *': {
               scrollSnapAlign: 'center',
             },
@@ -57,6 +57,7 @@ export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
               key={c.id}
               conference={c}
               onClick={() => handleConferenceCardClick(c.id)}
+              sx={{ minWidth: '350px', maxWidth: '350px' }}
             />
           ))}
         </Box>
@@ -67,13 +68,17 @@ export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
         onIdle={onIdle}
         zoom={zoom}
         style={{ flexGrow: '1', height: '100%', width: '100%' }}
+        onClick={() => setShowConferencesCard(undefined)}
       >
         {items?.map((item, i) => {
           return (
             <GoogleMapMarker
               key={i}
               position={{ lat: item.latitude, lng: item.longitude }}
-              onClick={() => setShowConferencesCard(item.conferences)}
+              onClick={(e) => {
+                e.domEvent.preventDefault();
+                setShowConferencesCard(item.conferences);
+              }}
               clickable
             />
           );

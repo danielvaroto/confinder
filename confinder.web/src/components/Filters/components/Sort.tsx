@@ -8,7 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { MouseEvent, ReactElement, useState } from 'react';
 
+import { useListFilter } from '../../../contexts/ListFilterContext';
+import { SortField, SortOrder } from '../../../types/SortField';
+
 export const Sort = (): ReactElement => {
+  const { filter, setSort } = useListFilter();
+  const { sort } = filter;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClickChip = (event: MouseEvent<HTMLDivElement>): void => {
@@ -17,6 +22,21 @@ export const Sort = (): ReactElement => {
   const handleCloseMenu = (): void => {
     setAnchorEl(null);
   };
+  const handleSortChange = (field: SortField, order: SortOrder) => () => {
+    setSort(field, order);
+    handleCloseMenu();
+    console.log(filter);
+  };
+  const menuItens = [
+    { label: 'Menor Quais', field: SortField.QualisIndex, order: SortOrder.ASC },
+    { label: 'Maior Quais', field: SortField.QualisIndex, order: SortOrder.DESC },
+    { label: 'Data do evento mais próxima', field: SortField.EventDate, order: SortOrder.ASC },
+    {
+      label: 'Data de subimissão mais próxima',
+      field: SortField.SubmissionDate,
+      order: SortOrder.ASC,
+    },
+  ];
   return (
     <>
       <Chip
@@ -28,20 +48,18 @@ export const Sort = (): ReactElement => {
       />
       <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
         <MenuList dense sx={{ p: 0 }}>
-          <MenuItem sx={{ px: 1 }} onClick={handleCloseMenu}>
-            <ListItemIcon></ListItemIcon>
-            <ListItemText>Data evento</ListItemText>
-          </MenuItem>
-          <MenuItem sx={{ px: 1 }} onClick={handleCloseMenu}>
-            <ListItemIcon></ListItemIcon>
-            <ListItemText>Data submissão</ListItemText>
-          </MenuItem>
-          <MenuItem sx={{ px: 1 }} onClick={handleCloseMenu}>
-            <ListItemIcon sx={{ justifyContent: 'center' }}>
-              <CheckIcon />
-            </ListItemIcon>
-            <ListItemText>Qualis</ListItemText>
-          </MenuItem>
+          {menuItens.map(({ label, field, order }) => (
+            <MenuItem
+              key={`${field}-${order}`}
+              sx={{ px: 1 }}
+              onClick={handleSortChange(field, order)}
+            >
+              <ListItemIcon sx={{ justifyContent: 'center' }}>
+                {sort?.field === field && sort?.order === order && <CheckIcon />}
+              </ListItemIcon>
+              <ListItemText>{label}</ListItemText>
+            </MenuItem>
+          ))}
         </MenuList>
       </Menu>
     </>

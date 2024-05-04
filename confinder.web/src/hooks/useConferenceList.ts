@@ -13,10 +13,13 @@ const fetchConferenceList = async (
     {
       params: {
         ...filter,
+        sort: undefined,
         minEventDate: formatRequestDate(filter.minEventDate),
         maxEventDate: formatRequestDate(filter.maxEventDate),
         minSubmissionDeadline: formatRequestDate(filter.minSubmissionDeadline),
         maxSubmissionDeadline: formatRequestDate(filter.maxSubmissionDeadline),
+        sortField: filter.sort?.field ?? undefined,
+        sortOrder: filter.sort?.order ?? undefined,
       },
     },
   );

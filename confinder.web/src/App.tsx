@@ -10,6 +10,7 @@ import { LocalizationProvider } from './contexts/LocalizationProvider';
 import { Details } from './pages/Details';
 import { Home } from './pages/Home';
 import { Layout } from './pages/Layout';
+import { List } from './pages/List';
 import { Map } from './pages/Map';
 
 export const App = (): ReactElement => {
@@ -46,6 +47,10 @@ export const App = (): ReactElement => {
         {
           path: 'map',
           element: <Map />,
+        },
+        {
+          path: 'list',
+          element: <List />,
         },
         {
           path: '',

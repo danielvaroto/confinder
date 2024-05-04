@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 
-type GoogleMapsMarkerProps = { onClick: () => void } & google.maps.MarkerOptions;
+type GoogleMapsMarkerProps = { onClick: (e: any) => void } & google.maps.MarkerOptions;
 
 export const GoogleMapMarker: FC<GoogleMapsMarkerProps> = ({ onClick, ...markerOptions }) => {
   const [marker, setMarker] = useState<google.maps.Marker>();

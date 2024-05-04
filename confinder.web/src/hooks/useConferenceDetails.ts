@@ -11,7 +11,9 @@ const fetchConferenceDetails = async (conferenceId: number): Promise<ConferenceD
 };
 
 export const useConferenceDetails = (conferenceId: number) => {
-  return useQuery<ConferenceDetailsResponse>(['conferenceDetails', conferenceId], () =>
-    fetchConferenceDetails(conferenceId),
-  );
+  return useQuery<ConferenceDetailsResponse>({
+    queryKey: ['conferenceDetails', conferenceId],
+    queryFn: () => fetchConferenceDetails(conferenceId),
+    enabled: Boolean(conferenceId),
+  });
 };

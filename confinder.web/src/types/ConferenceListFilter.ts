@@ -1,6 +1,11 @@
 import { QualisIndex } from './QualisIndex';
+import { SortField, SortOrder } from './SortField';
 
 export type ConferenceListFilter = {
+  sort?: {
+    order: SortOrder;
+    field: SortField;
+  };
   page: number;
   name?: string;
   location?: string;

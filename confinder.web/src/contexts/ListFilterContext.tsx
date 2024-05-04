@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 
 import { ConferenceListFilter } from '../types/ConferenceListFilter';
 import { QualisIndex } from '../types/QualisIndex';
+import { SortField, SortOrder } from '../types/SortField';
 
 type ListFilterContextProps = {
   filter: ConferenceListFilter;
@@ -12,6 +13,7 @@ type ListFilterContextProps = {
   setQualisIndex: (minQualisIndex?: QualisIndex, maxQualisIndex?: QualisIndex) => void;
   setEventDate: (minEventDate?: Date, maxEventDate?: Date) => void;
   setSubmissionDeadline: (minSubmissionDeadline?: Date, maxSubmissionDeadline?: Date) => void;
+  setSort: (field: SortField, order: SortOrder) => void;
 };
 
 const ListFilterContext = createContext<ListFilterContextProps>({
@@ -24,6 +26,7 @@ const ListFilterContext = createContext<ListFilterContextProps>({
   setQualisIndex: () => {},
   setEventDate: () => {},
   setSubmissionDeadline: () => {},
+  setSort: () => {},
 });
 
 export const useListFilter = () => {
@@ -57,19 +60,23 @@ export const ListFilterContextProvider = ({ children }: { children: ReactNode })
     setFilter({ ...filter, minSubmissionDeadline, maxSubmissionDeadline });
   };
 
-  return (
-    <ListFilterContext.Provider
-      value={{
-        filter,
-        setPage,
-        setName,
-        setLocation,
-        setQualisIndex,
-        setEventDate,
-        setSubmissionDeadline,
-      }}
-    >
-      {children}
-    </ListFilterContext.Provider>
+  const setSort = (field: SortField, order: SortOrder) => {
+    setFilter({ ...filter, sort: { field, order } });
+  };
+
+  const value = useMemo(
+    () => ({
+      filter,
+      setPage,
+      setName,
+      setLocation,
+      setQualisIndex,
+      setEventDate,
+      setSubmissionDeadline,
+      setSort,
+    }),
+    [filter],
   );
+
+  return <ListFilterContext.Provider value={value}>{children}</ListFilterContext.Provider>;
 };

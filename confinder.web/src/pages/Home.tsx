@@ -1,73 +1,39 @@
-import MapIcon from '@mui/icons-material/Map';
-import Container from '@mui/material/Container';
-import Fab from '@mui/material/Fab';
-import Grid from '@mui/material/Grid';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { ReactElement, useState } from 'react';
+import { Button, Container, Grid, Stack, Typography } from '@mui/material';
+import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { ConferenceCard } from '../components/ConferenceCard';
-import { ConferenceDetails } from '../components/ConferenceDetails';
-import { Filters } from '../components/Filters';
-import { Pagination } from '../components/Pagination';
-import { useListFilter } from '../contexts/ListFilterContext';
-import { useConferenceList } from '../hooks/useConferenceList';
 
 export const Home = (): ReactElement => {
   const navigate = useNavigate();
-  const { filter } = useListFilter();
-  const { isLoading, data } = useConferenceList(filter);
-  const handleFabMapClick = () => navigate(`/map`);
-  const [openConferenceDetails, setOpenConferenceDetails] = useState(false);
-  const [selectedConference, setSelectedConference] = useState(0);
-  const handleConferenceCardClick = (conferenceId: number) => {
-    setSelectedConference(conferenceId);
-    setOpenConferenceDetails(true);
-  };
+  const handleListClick = () => navigate('/list');
+  const handleMapClick = () => navigate(`/map`);
 
   return (
     <>
-      <Container maxWidth="xl">
-        <Stack spacing={0.5} sx={{ px: 2, py: 1 }}>
-          <Typography variant="h6">Conferências no mundo</Typography>
-          {isLoading ? (
-            <Skeleton />
-          ) : (
-            <Typography variant="subtitle1">{data?.totalCount} resultados encontrados</Typography>
-          )}
-        </Stack>
-        <Filters />
-        <Grid container spacing={1}>
-          {isLoading
-            ? Array(12).map((i) => (
-                <Grid item xs={12} sm={12} md={6} lg={4} xl={3} key={i}>
-                  <Skeleton variant="rounded" height={165} />
-                </Grid>
-              ))
-            : data?.records?.map((c) => (
-                <Grid item xs={12} sm={12} md={6} lg={4} xl={3} key={c.id}>
-                  <ConferenceCard conference={c} onClick={() => handleConferenceCardClick(c.id)} />
-                </Grid>
-              ))}
+      <Container maxWidth="lg">
+        <Grid container>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h3" component="h1" gutterBottom>
+              Sua fonte para pesquisa de qualidade
+            </Typography>
+            <Typography variant="h5" paragraph>
+              Explore a pesquisa de ponta em todas as áreas do conhecimento.
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Encontre sua conferência ideal para obter insights valiosos, fazer networking e
+              contribuir para a comunidade científica.
+            </Typography>
+            <Stack direction="row" spacing={2}>
+              <Button variant="contained" disableElevation onClick={handleMapClick}>
+                Visualizar Mapa
+              </Button>
+              <Button variant="outlined" disableElevation onClick={handleListClick}>
+                Visualizar Listagem
+              </Button>
+            </Stack>
+          </Grid>
+          <Grid item xs={12}></Grid>
         </Grid>
-        {data?.perPage && data?.totalCount ? (
-          <Pagination perPage={data.perPage} totalCount={data.totalCount} />
-        ) : null}
-        <ConferenceDetails
-          open={openConferenceDetails}
-          onClose={() => setOpenConferenceDetails(false)}
-          conferenceId={selectedConference}
-        />
       </Container>
-
-      <Grid width="100%" position="fixed" justifyContent="center" display="flex" bottom="5vh">
-        <Fab variant="extended" size="small" onClick={handleFabMapClick}>
-          Ver mapa
-          <MapIcon sx={{ ml: 1 }} />
-        </Fab>
-      </Grid>
     </>
   );
 };

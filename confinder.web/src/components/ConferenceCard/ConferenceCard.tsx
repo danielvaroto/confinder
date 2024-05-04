@@ -8,6 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import { SxProps, Theme } from '@mui/material/styles';
 import { ReactElement } from 'react';
 
 import { ConferenceListItemResponse } from '../../types/ConferenceListItemResponse';
@@ -18,16 +19,17 @@ import { TitleTypography } from './components/TitleTypography';
 type ConferenceCardProps = {
   conference: ConferenceListItemResponse;
   onClick: () => void;
+  sx?: SxProps<Theme> | undefined;
 };
 
-export const ConferenceCard = ({ conference, onClick }: ConferenceCardProps): ReactElement => {
+export const ConferenceCard = ({ conference, onClick, sx }: ConferenceCardProps): ReactElement => {
   const qualisLabel = `Qualis ${conference.qualisIndex}`;
   const eventDateLabel = `${formatListCardDate(conference.startDate)} até ${formatListCardDate(
     conference.endDate,
   )}`;
 
   return (
-    <Card raised sx={{ width: '100%' }}>
+    <Card raised sx={{ width: '100%', ...(sx ?? {}) }}>
       <CardActionArea onClick={onClick}>
         <CardContent>
           <Box minHeight="68px">
