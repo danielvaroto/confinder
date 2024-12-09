@@ -3,6 +3,7 @@ import Chip from '@mui/material/Chip';
 import { ReactElement } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
+import { baseChipStyles } from './BaseChipStyles';
 export const NameFilter = (): ReactElement => {
   const {
     filter: { name },
@@ -17,7 +18,7 @@ export const NameFilter = (): ReactElement => {
         <Chip
           icon={<AbcIcon />}
           label={name}
-          sx={{ borderRadius: '8px', borderColor: '#616161' }}
+          sx={baseChipStyles}
           onDelete={handleClearFilter}
         />
       ) : null}

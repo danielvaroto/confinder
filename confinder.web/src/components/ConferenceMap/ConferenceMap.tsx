@@ -27,6 +27,7 @@ export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
   };
   const [openConferenceDetails, setOpenConferenceDetails] = useState(false);
   const [selectedConference, setSelectedConference] = useState(0);
+  const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
   const handleConferenceCardClick = (conferenceId: number) => {
     setSelectedConference(conferenceId);
     setOpenConferenceDetails(true);
@@ -68,7 +69,10 @@ export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
         onIdle={onIdle}
         zoom={zoom}
         style={{ flexGrow: '1', height: '100%', width: '100%' }}
-        onClick={() => setShowConferencesCard(undefined)}
+        onClick={() => {
+          setShowConferencesCard(undefined);
+          setSelectedMarkerId(null);
+        }}
       >
         {items?.map((item, i) => {
           return (
@@ -78,8 +82,18 @@ export const ConferenceMap = ({ items }: ConferenceMapProps): ReactElement => {
               onClick={(e) => {
                 e.domEvent.preventDefault();
                 setShowConferencesCard(item.conferences);
+                setCenter({ lat: item.latitude, lng: item.longitude });
+                setSelectedMarkerId(i);
               }}
               clickable
+              icon={{
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: selectedMarkerId === i ? 10 : 8,
+                fillColor: selectedMarkerId === i ? '#1976d2' : '#f44336',
+                fillOpacity: 1,
+                strokeWeight: 2,
+                strokeColor: '#fff',
+              }}
             />
           );
         })}

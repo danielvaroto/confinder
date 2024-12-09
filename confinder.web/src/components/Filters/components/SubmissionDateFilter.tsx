@@ -11,6 +11,7 @@ import { ReactElement, useState } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
 import { ResponsiveDrawer } from '../../ResponsiveDrawer';
+import { baseChipStyles } from './BaseChipStyles';
 
 export const SubmissionDateFilter = (): ReactElement => {
   const {
@@ -36,7 +37,7 @@ export const SubmissionDateFilter = (): ReactElement => {
         icon={<EventOutlinedIcon />}
         label="Submissão"
         variant={chipVariant}
-        sx={{ borderRadius: '8px', borderColor: '#616161' }}
+        sx={baseChipStyles}
         onClick={() => setOpen(true)}
         onDelete={handleChipDelete}
       />

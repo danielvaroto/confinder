@@ -16,16 +16,18 @@ export const Map = () => {
     <Grid container direction="column">
       <Grid item>
         <Stack spacing={0.5} sx={{ px: 2, py: 1 }}>
-          <Typography variant="h6">Conferências no mundo</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
+            Encontre conferências acadêmicas
+          </Typography>
           {isLoading ? (
-            <Skeleton />
+            <Skeleton width={200} />
           ) : (
-            <Typography variant="subtitle1">
-              {data?.conferencesCount} conferências encontradas em {data?.locationsCount}{' '}
-              localizações.
+            <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+              {data?.conferencesCount} conferências encontradas em {data?.locationsCount} localizações
             </Typography>
           )}
         </Stack>
+
         <Filters isMap />
       </Grid>
       <Grid item xs>

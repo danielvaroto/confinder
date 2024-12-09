@@ -12,6 +12,7 @@ import { ReactElement, useState } from 'react';
 import { useListFilter } from '../../../contexts/ListFilterContext';
 import { useLocationList } from '../../../hooks/useLocationList';
 import { ResponsiveDrawer } from '../../ResponsiveDrawer';
+import { baseChipStyles } from './BaseChipStyles';
 
 export const LocationFilter = (): ReactElement => {
   const {
@@ -32,9 +33,9 @@ export const LocationFilter = (): ReactElement => {
     <>
       <Chip
         icon={<LocationOnOutlinedIcon />}
-        label="Localização"
+        label={location || "Localização"}
         variant={chipVariant}
-        sx={{ borderRadius: '8px', borderColor: '#616161' }}
+        sx={baseChipStyles}
         onClick={() => setOpen(true)}
         onDelete={handleChipDelete}
       />

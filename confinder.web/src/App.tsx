@@ -7,7 +7,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ColorModeContext } from './contexts/ColorModeContext';
 import { ListFilterContextProvider } from './contexts/ListFilterContext';
 import { LocalizationProvider } from './contexts/LocalizationProvider';
-import { Details } from './pages/Details';
 import { Home } from './pages/Home';
 import { Layout } from './pages/Layout';
 import { List } from './pages/List';
@@ -40,10 +39,6 @@ export const App = (): ReactElement => {
       path: '/',
       element: <Layout />,
       children: [
-        {
-          path: 'details/:id',
-          element: <Details />,
-        },
         {
           path: 'map',
           element: <Map />,

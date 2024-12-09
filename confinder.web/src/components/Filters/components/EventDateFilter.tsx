@@ -11,6 +11,7 @@ import { ReactElement, useState } from 'react';
 
 import { useListFilter } from '../../../contexts/ListFilterContext';
 import { ResponsiveDrawer } from '../../ResponsiveDrawer';
+import { baseChipStyles } from './BaseChipStyles';
 
 export const EventDateFilter = (): ReactElement => {
   const {
@@ -35,8 +36,8 @@ export const EventDateFilter = (): ReactElement => {
       <Chip
         icon={<DateRangeOutlinedIcon />}
         label="Evento"
+        sx={baseChipStyles}
         variant={chipVariant}
-        sx={{ borderRadius: '8px', borderColor: '#616161' }}
         onClick={() => setOpen(true)}
         onDelete={handleChipDelete}
       />
