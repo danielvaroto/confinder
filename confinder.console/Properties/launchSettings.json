@@ -1,0 +1,12 @@
+{
+    "profiles": {
+        "confinder.console": {
+            "commandName": "Project",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "DB_CONNECTION_STRING": "User ID=user;Password=password;Host=localhost;Port=5432;Database=confinder;Pooling=true",
+                "GEOCODING_API_KEY": "SOME_API_KEY"
+            }
+        }
+    }
+}

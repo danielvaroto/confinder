@@ -5,6 +5,9 @@ services:
     build: ./confinder.web
     ports:
       - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:7077/
+      - REACT_APP_MAPS_KEY=SOME_API_KEY
     depends_on:
       - api
   api:
@@ -15,6 +18,7 @@ services:
       - "7077:80"
     environment:
       - DB_CONNECTION_STRING=User ID=user;Password=password;Host=db;Port=5432;Database=confinder;Pooling=true
+      - GEOCODING_API_KEY=SOME_API_KEY
     depends_on:
       - db
   console:
@@ -23,6 +27,7 @@ services:
       dockerfile: ./confinder.console/Dockerfile
     environment:
       - DB_CONNECTION_STRING=User ID=user;Password=password;Host=db;Port=5432;Database=confinder;Pooling=true
+      - GEOCODING_API_KEY=SOME_API_KEY
     depends_on:
       - db
   db:

@@ -2,6 +2,8 @@
 using System.Linq;
 using confinder.application.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace confinder.application.Context
 {
@@ -23,6 +25,12 @@ namespace confinder.application.Context
         {
             AddTimestamps();
             return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            AddTimestamps();
+            return base.SaveChangesAsync(cancellationToken);
         }
 
         private void AddTimestamps()
